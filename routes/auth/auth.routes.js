@@ -5,12 +5,13 @@ const jwt = require('jsonwebtoken');
 const User = require('../../models/User');
 const Role = require('../../models/Role');
 const authMiddleware = require('../../middlewares/auth.middleware');
+const checkPermission = require('../../middlewares/permission.middleware');
 require('dotenv').config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
 // Register route
-router.post('/register', async (req, res) => {
+router.post('/register', checkPermission('create', 'user'), async (req, res) => {
   try {
     const { name, email, password, roleName } = req.body;
 
